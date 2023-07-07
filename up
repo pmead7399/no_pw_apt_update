@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Function to display a progress bar
+progress_bar() {
+    local width=60
+    local percentage=$1
+    local completed=$((percentage * width / 100))
+    local remaining=$((width - completed))
+
+    printf "["
+    printf "%${completed}s" | tr ' ' '#'
+    printf "%${remaining}s"
+    printf "] %d%%" "$percentage"
+}
+
+# Run apt update
+echo "Running apt update..."
+echo "YOUR_PASSWORD" | sudo -S -p "" apt update -y
+
+# Check if any packages were downloaded
+if [ $(apt list --upgradable 2>/dev/null | grep -c upgradable) -eq 0 ]; then
+  echo "No packages to upgrade."
+else
+  # Check if any system packages were downloaded
+  if apt list --upgradable 2> >(grep -v 'WARNING: apt does not have a stable CLI interface') | grep -q "^\(linux\|ubuntu\|[a-z]\+-\?\(kernel\|headers\)\)"; then
+    echo "System packages detected, running dist-upgrade."
+    echo "YOUR_PASSWORD" | sudo -S -p "" apt dist-upgrade -y
+  else
+    echo "Regular packages detected, running upgrade."
+    echo "YOUR_PASSWORD" | sudo -S -p "" apt upgrade -y
+  fi
+fi
+
+# Check if there are any packages to autoremove
+if [ $(apt-get -s autoremove 2> >(grep -v 'WARNING: apt does not have a stable CLI interface') | grep -c 'The following packages will be REMOVED:') -gt 0 ]; then
+  echo "Packages to be autoremoved detected, running autoremove."
+  echo "YOUR_PASSWORD" | sudo -S -p "" apt autoremove -y
+fi
