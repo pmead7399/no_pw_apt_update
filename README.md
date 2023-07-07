@@ -1,2 +1,7 @@
 # no_pw_apt_update
-bash script: sudo apt update and sudo apt upgrade without having to enter my password
+bash script: sudo apt update and sudo apt upgrade without having to enter your password. 
+I get annoyed when I have to enter my password so often in Linux. Yes I am very aware of the risks and the dangers but this isn't my work machine it's just my crappy every-day use that I check the weather and edit the Marlin or Klipper firmwares for my 3d printers. Oh and I also feel I should mention I am not a coder or a developer, more like a dabbler. But these days I'm a dabbler with ChatGPT! So I asked it to write this for me and after 4 or 5 iterations of fixing error messages or adding to it, it does exactly what I want it to do and all I have to do is type up.
+
+So what is does is to automatically enter sudo apt update, if there are system files it does sudo apt dist-upgrade if they are not system files it just does regular sudo apt upgrade. If autoremove is mentioned it does that too. So I took this code and made a file in a directory that is already in the $PATH and named the file "up". You have to do the chmod +x to make it executable and you have to edit the file and replace <YOUR_PASSWORD> with your actual password (Like I said I'm not concerned there's nothing on this laptop that if anyone had could hurt me with so use at your own risk.
+
+I'm only putting it here in case somebody might be as password-annoyed (maybe somewhat password-lazy) as I am. You can do whatever you want with it. Cheers! 
